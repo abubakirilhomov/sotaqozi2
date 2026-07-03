@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Домашнее задание — HTML-таблица</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f4f6fb;
+    --card:#ffffff;
+    --ink:#1d2233;
+    --muted:#5b6376;
+    --line:#e4e8f2;
+    --accent:#ff6b35;
+    --accent-soft:#fff1ea;
+    --code-bg:#1d2233;
+    --code-ink:#a8e6cf;
+    --css-ink:#9ecbff;
+    --ok:#2e7d32;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;
+    line-height:1.6;
+    padding:32px 16px 64px;
+  }
+  .wrap{max-width:820px;margin:0 auto;}
+
+  /* --- Header --- */
+  .topbar{
+    display:flex;align-items:center;gap:12px;
+    font-family:"JetBrains Mono",monospace;
+    font-size:13px;color:var(--muted);
+    margin-bottom:18px;
+  }
+  .topbar .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);}
+
+  header.hero{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:32px 30px;
+    margin-bottom:24px;
+    position:relative;
+    overflow:hidden;
+  }
+  header.hero::before{
+    content:"</>";
+    position:absolute;right:18px;top:6px;
+    font-family:"JetBrains Mono",monospace;
+    font-size:84px;font-weight:700;
+    color:var(--accent-soft);
+    user-select:none;
+  }
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;
+    font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--accent);font-weight:600;margin:0 0 8px;
+  }
+  header.hero h1{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:34px;line-height:1.15;margin:0 0 10px;font-weight:700;
+  }
+  header.hero p{margin:0;color:var(--muted);max-width:560px;}
+
+  /* --- Section blocks --- */
+  section{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:26px 28px;
+    margin-bottom:22px;
+  }
+  .sec-head{display:flex;align-items:center;gap:12px;margin:0 0 18px;}
+  .num{
+    font-family:"Space Grotesk",sans-serif;font-weight:700;
+    background:var(--accent);color:#fff;
+    width:34px;height:34px;border-radius:10px;
+    display:grid;place-items:center;font-size:16px;flex:none;
+  }
+  .sec-head h2{font-family:"Space Grotesk",sans-serif;font-size:21px;margin:0;font-weight:600;}
+
+  ul.task{margin:0;padding-left:20px;}
+  ul.task li{margin-bottom:8px;}
+  .pill{
+    display:inline-block;font-family:"JetBrains Mono",monospace;
+    font-size:13px;background:var(--accent-soft);color:var(--accent);
+    padding:1px 8px;border-radius:6px;font-weight:600;
+  }
+
+  /* --- Preview / target table --- */
+  .preview-label{
+    font-family:"JetBrains Mono",monospace;font-size:12px;
+    color:var(--muted);text-transform:uppercase;letter-spacing:1px;
+    margin:0 0 12px;
+  }
+  .menu-table{
+    border-collapse:collapse;
+    width:100%;
+    font-family:"Inter",sans-serif;
+    box-shadow:0 6px 20px rgba(29,34,51,.08);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .menu-table td,.menu-table th{
+    border:2px solid #ffffff;
+    padding:14px 10px;
+    text-align:center;
+  }
+  .menu-table .title{
+    background:#ff6b35;color:#fff;
+    font-size:20px;font-weight:700;letter-spacing:.5px;
+    padding:16px;
+  }
+  .menu-table thead th{
+    background:#2d3142;color:#ffd166;
+    font-size:15px;font-weight:600;
+  }
+  .menu-table .num-cell{background:#fff3e0;color:#5b6376;font-weight:600;width:60px;}
+  .menu-table .dish{background:#ffd5c2;color:#7a2e12;font-weight:600;}
+  .menu-table .cat{background:#cdeffd;color:#0b4b66;font-weight:600;}
+  .menu-table .price{background:#2e7d32;color:#fff;font-weight:700;}
+
+  .table-scroll{overflow-x:auto;}
+
+  /* --- Hints grid --- */
+  .hint-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .hint-col{
+    border:1px solid var(--line);border-radius:14px;padding:18px 18px 6px;
+  }
+  .hint-col h3{
+    font-family:"Space Grotesk",sans-serif;font-size:16px;margin:0 0 14px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .badge{font-family:"JetBrains Mono",monospace;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:600;}
+  .badge.html{background:#fff1ea;color:#ff6b35;}
+  .badge.css{background:#eaf3ff;color:#2563eb;}
+
+  .hint{margin-bottom:14px;}
+  code.tag{
+    display:inline-block;font-family:"JetBrains Mono",monospace;
+    font-size:13px;font-weight:600;
+    background:var(--code-bg);
+    padding:3px 9px;border-radius:7px;
+  }
+  code.tag.html{color:var(--code-ink);}
+  code.tag.css{color:var(--css-ink);}
+  .hint small{display:block;color:var(--muted);margin-top:5px;font-size:13px;line-height:1.45;}
+
+  /* --- colors note --- */
+  .colors{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px;}
+  .swatch{
+    display:flex;align-items:center;gap:7px;
+    font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);
+    background:#f7f9fc;border:1px solid var(--line);border-radius:8px;padding:5px 9px;
+  }
+  .chip{width:16px;height:16px;border-radius:4px;border:1px solid rgba(0,0,0,.08);}
+
+  /* --- checklist & bonus --- */
+  .check li{list-style:none;margin-bottom:8px;padding-left:28px;position:relative;}
+  .check{padding:0;margin:0;}
+  .check li::before{
+    content:"☐";position:absolute;left:0;top:0;color:var(--accent);font-size:18px;
+  }
+  .bonus{
+    background:linear-gradient(135deg,#fff1ea,#fffaf7);
+    border:1px dashed var(--accent);
+  }
+  .bonus .sec-head h2{color:var(--accent);}
+  .bonus .num{background:#2d3142;}
+
+  footer{
+    text-align:center;color:var(--muted);font-size:13px;
+    font-family:"JetBrains Mono",monospace;margin-top:32px;
+  }
+
+  @media(max-width:640px){
+    .hint-grid{grid-template-columns:1fr;}
+    header.hero h1{font-size:26px;}
+    header.hero::before{font-size:56px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar"><span class="dot"></span> MARS · Frontend · HTML &amp; CSS · Урок: Таблицы</div>
+
+  <header class="hero">
+    <p class="eyebrow">Домашнее задание</p>
+    <h1>Свёрстай меню кафе с помощью таблицы</h1>
+    <p>На уроке мы сделали таблицу «Employee Information». Теперь примени те же приёмы — объединение ячеек, заголовки и цветные ряды — чтобы повторить меню кафе ниже.</p>
+  </header>
+
+  <!-- TASK -->
+  <section>
+    <div class="sec-head"><span class="num">1</span><h2>Что нужно сделать</h2></div>
+    <ul class="task">
+      <li>Создай файл <span class="pill">index.html</span> и подключи к нему <span class="pill">style.css</span>.</li>
+      <li>Свёрстай таблицу из <b>4 столбцов</b>: № · Блюдо · Категория · Цена.</li>
+      <li>Первая строка — <b>название кафе</b> на всю ширину (объедини 4 ячейки в одну).</li>
+      <li>Вторая строка — <b>заголовки</b> столбцов.</li>
+      <li>Заполни таблицу <b>минимум 4 блюдами</b> и раскрась ячейки, как на превью.</li>
+    </ul>
+  </section>
+
+  <!-- PREVIEW -->
+  <section>
+    <div class="sec-head"><span class="num">2</span><h2>Как должно получиться</h2></div>
+    <p class="preview-label">// Превью результата</p>
+    <div class="table-scroll">
+      <table class="menu-table">
+        <tr><td class="title" colspan="4">Меню кафе «Bon Appétit»</td></tr>
+        <thead>
+          <tr>
+            <th>№</th><th>Блюдо</th><th>Категория</th><th>Цена</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="num-cell">1</td><td class="dish">Цезарь с курицей</td><td class="cat">Салат</td><td class="price">45 000 сум</td>
+          </tr>
+          <tr>
+            <td class="num-cell">2</td><td class="dish">Том Ям</td><td class="cat">Суп</td><td class="price">55 000 сум</td>
+          </tr>
+          <tr>
+            <td class="num-cell">3</td><td class="dish">Стейк Рибай</td><td class="cat">Горячее</td><td class="price">120 000 сум</td>
+          </tr>
+          <tr>
+            <td class="num-cell">4</td><td class="dish">Чизкейк</td><td class="cat">Десерт</td><td class="price">38 000 сум</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- HINTS -->
+  <section>
+    <div class="sec-head"><span class="num">3</span><h2>Подсказки</h2></div>
+    <div class="hint-grid">
+
+      <!-- HTML -->
+      <div class="hint-col">
+        <h3><span class="badge html">HTML</span> Теги для разметки</h3>
+
+        <div class="hint">
+          <code class="tag html">&lt;table&gt;</code>
+          <small>Контейнер всей таблицы. Внутри живут строки.</small>
+        </div>
+        <div class="hint">
+          <code class="tag html">&lt;tr&gt;</code>
+          <small>Строка таблицы (table row). Каждая строка — отдельный <code class="tag html">&lt;tr&gt;</code>.</small>
+        </div>
+        <div class="hint">
+          <code class="tag html">&lt;th&gt;</code>
+          <small>Ячейка-заголовок. Текст в ней по умолчанию жирный и по центру.</small>
+        </div>
+        <div class="hint">
+          <code class="tag html">&lt;td&gt;</code>
+          <small>Обычная ячейка с данными (table data) — блюдо, цена и т.д.</small>
+        </div>
+        <div class="hint">
+          <code class="tag html">colspan="4"</code>
+          <small>Атрибут для ячейки: объединяет её на 4 столбца. Нужен для названия кафе сверху.</small>
+        </div>
+        <div class="hint">
+          <code class="tag html">&lt;thead&gt; &lt;tbody&gt;</code>
+          <small>Необязательно, но красиво: «шапка» и «тело» таблицы.</small>
+        </div>
+      </div>
+
+      <!-- CSS -->
+      <div class="hint-col">
+        <h3><span class="badge css">CSS</span> Свойства для стилей</h3>
+
+        <div class="hint">
+          <code class="tag css">border-collapse: collapse;</code>
+          <small>Убирает двойные линии между ячейками — рамки сливаются в одну.</small>
+        </div>
+        <div class="hint">
+          <code class="tag css">border: 2px solid;</code>
+          <small>Рамка ячеек: толщина, тип линии и цвет.</small>
+        </div>
+        <div class="hint">
+          <code class="tag css">background-color: ...;</code>
+          <small>Цвет фона ячейки. Можно по имени (red) или по коду (#2e7d32).</small>
+        </div>
+        <div class="hint">
+          <code class="tag css">color: ...;</code>
+          <small>Цвет текста внутри ячейки.</small>
+        </div>
+        <div class="hint">
+          <code class="tag css">text-align: center;</code>
+          <small>Выравнивание текста по горизонтали (center / left / right).</small>
+        </div>
+        <div class="hint">
+          <code class="tag css">padding: 14px;</code>
+          <small>Внутренние отступы — чтобы текст не прилипал к рамке.</small>
+        </div>
+        <div class="hint">
+          <code class="tag css">font-weight: bold;</code>
+          <small>Жирность текста. Пригодится для цены и заголовков.</small>
+        </div>
+      </div>
+    </div>
+
+    <p class="preview-label" style="margin-top:22px">// Цвета, если не хочешь подбирать сам</p>
+    <div class="colors">
+      <span class="swatch"><span class="chip" style="background:#ff6b35"></span>#ff6b35 — название</span>
+      <span class="swatch"><span class="chip" style="background:#2d3142"></span>#2d3142 — шапка</span>
+      <span class="swatch"><span class="chip" style="background:#ffd166"></span>#ffd166 — текст шапки</span>
+      <span class="swatch"><span class="chip" style="background:#ffd5c2"></span>#ffd5c2 — блюдо</span>
+      <span class="swatch"><span class="chip" style="background:#cdeffd"></span>#cdeffd — категория</span>
+      <span class="swatch"><span class="chip" style="background:#2e7d32"></span>#2e7d32 — цена</span>
+    </div>
+  </section>
+
+  <!-- CHECKLIST -->
+  <section>
+    <div class="sec-head"><span class="num">4</span><h2>Проверь себя перед сдачей</h2></div>
+    <ul class="check">
+      <li>Таблица состоит из 4 столбцов и хотя бы 6 строк.</li>
+      <li>Название кафе объединено в одну ячейку через <span class="pill">colspan</span>.</li>
+      <li>Заголовки сделаны через <span class="pill">&lt;th&gt;</span>, а не <span class="pill">&lt;td&gt;</span>.</li>
+      <li>У ячеек есть рамки, отступы и разные цвета фона.</li>
+      <li>CSS вынесен в отдельный файл <span class="pill">style.css</span>.</li>
+    </ul>
+  </section>
+
+  <!-- BONUS -->
+  <section class="bonus">
+    <div class="sec-head"><span class="num">★</span><h2>Бонус (по желанию)</h2></div>
+    <ul class="task">
+      <li>Сделай так, чтобы строка <b>подсвечивалась при наведении</b> мышкой — <span class="pill">tr:hover</span>.</li>
+      <li>Придумай <b>своё кафе</b> со своим названием, блюдами и цветовой палитрой.</li>
+      <li>Добавь столбец <b>«Острота»</b> и обозначь её эмодзи 🌶️.</li>
+    </ul>
+  </section>
+
+  <footer>// Удачи! Если застрял — перечитай конспект урока про &lt;table&gt;</footer>
+
+</div>
+</body>
+</html>
